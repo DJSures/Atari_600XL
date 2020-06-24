@@ -169,8 +169,10 @@ void setKey(int kc, int modifier) {
         break;
       }
 
+    if (modifier != 0)
+      Keyboard.press(modifier);
+
     Keyboard.press(kc);
-    //  Keyboard.press(modifier);
   }
 }
 

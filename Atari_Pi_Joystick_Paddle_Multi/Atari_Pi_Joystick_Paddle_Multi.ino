@@ -93,13 +93,13 @@ void setup() {
 #ifdef SERIAL_DEBUG
   Serial.begin(9600);
 #else
-  _j1.setXAxisRange(-127, 127);
-  _j1.setYAxisRange(-127, 127);
-  _j1.begin();
-  
   _j2.setXAxisRange(-127, 127);
   _j2.setYAxisRange(-127, 127);
   _j2.begin();
+
+  _j1.setXAxisRange(-127, 127);
+  _j1.setYAxisRange(-127, 127);
+  _j1.begin();
 #endif
 
   pinMode(J1UP, INPUT_PULLUP);
