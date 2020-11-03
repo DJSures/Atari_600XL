@@ -1,4 +1,5 @@
 #include "Joystick.h"
+#include <Keyboard.h>
 
 // ***********************************************************************
 // **                                                                   **
@@ -33,15 +34,15 @@
 #define J2RIGHT 5
 #define J2BUTTON 6
 
-#define BSTART 14
-#define BSELECT 16
-#define BOPTION A0
-#define BRESET A1
+#define BSTART A1
+#define BSELECT A0
+#define BOPTION 15
+#define BRESET 14
 
-Joystick_ _j1 = Joystick_(
+Joystick_ _j2 = Joystick_(
     0x03,
     JOYSTICK_TYPE_JOYSTICK,
-    5,
+    1,
     0,
     true,
     true,
@@ -56,7 +57,7 @@ Joystick_ _j1 = Joystick_(
     false  
   );
   
-Joystick_ _j2 = Joystick_(
+Joystick_ _j1 = Joystick_(
     0x06,
     JOYSTICK_TYPE_JOYSTICK,
     1,
@@ -93,13 +94,15 @@ void setup() {
 #ifdef SERIAL_DEBUG
   Serial.begin(9600);
 #else
-  _j2.setXAxisRange(-127, 127);
-  _j2.setYAxisRange(-127, 127);
-  _j2.begin();
-
+  Keyboard.begin();
+  
   _j1.setXAxisRange(-127, 127);
   _j1.setYAxisRange(-127, 127);
   _j1.begin();
+
+  _j2.setXAxisRange(-127, 127);
+  _j2.setYAxisRange(-127, 127);
+  _j2.begin();
 #endif
 
   pinMode(J1UP, INPUT_PULLUP);
@@ -130,10 +133,14 @@ void loop() {
   Serial.print(digitalRead(J1LEFT));
   Serial.print(digitalRead(J1BUTTON));
 
+  Serial.print(" ");
+  
   Serial.print(digitalRead(BSTART));
   Serial.print(digitalRead(BSELECT));
   Serial.print(digitalRead(BOPTION));
   Serial.print(digitalRead(BRESET));
+
+  Serial.print(" ");
 
   Serial.print(digitalRead(J2UP));
   Serial.print(digitalRead(J2RIGHT));
@@ -200,15 +207,20 @@ void loop() {
   }
 
   // ---------------------------------------------------------
-  // BUTTONS
+  // CONSOLE BUTTONS
   // ---------------------------------------------------------
 {
   byte b = !digitalRead(BSTART);
 
   if (b != _lastBSTART) {
 
-    _j1.setButton(1, b);
-
+//    _j1.setButton(1, b);
+ 
+    if (b)
+      Keyboard.press(KEY_F4);
+    else
+      Keyboard.release(KEY_F4);
+    
     _lastBSTART = b;
   }
 }
@@ -218,7 +230,12 @@ void loop() {
 
   if (b != _lastBSELECT) {
 
-    _j1.setButton(2, b);
+//    _j1.setButton(2, b);
+    
+    if (b)
+      Keyboard.press(KEY_F3);
+    else
+      Keyboard.release(KEY_F3);
 
     _lastBSELECT = b;
   }
@@ -229,7 +246,12 @@ void loop() {
 
   if (b != _lastBOPTION) {
 
-    _j1.setButton(3, b);
+//    _j1.setButton(3, b);
+    
+    if (b)
+      Keyboard.press(KEY_F2);
+    else
+      Keyboard.release(KEY_F2);
 
     _lastBOPTION = b;
   }
@@ -240,7 +262,10 @@ void loop() {
 
   if (b != _lastBRESET) {
 
-    _j1.setButton(4, b);
+    if (b)
+      Keyboard.press(KEY_F5);
+    else
+      Keyboard.release(KEY_F5);
 
     _lastBRESET = b;
   }
